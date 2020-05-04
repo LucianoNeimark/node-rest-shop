@@ -1,7 +1,11 @@
 const express = require('express');
 const app = express();
+
 const productRoutes = require('./api/routes/products.js');
 const orderRoutes = require('./api/routes/oders.js');
+const userRoutes = require('./api/routes/users');
+
+
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -11,6 +15,7 @@ mongoose.connect('mongodb+srv://lneimark:Og18505b@node-rest-shop-hb2l4.mongodb.n
 });
 
 app.use(morgan('dev'));
+app.use('./uploads', express.static('uploads'));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use((req, res, next) =>{
@@ -29,6 +34,7 @@ app.use((req, res, next) =>{
 //routes which handle requests
 app.use('/products', productRoutes); // Todo lo que sea via '/products' se maneja con productRoutes
 app.use('/orders', orderRoutes); //// Todo lo que sea via '/orders' se maneja con orderRoutes
+app.use('/user', userRoutes);
 
 app.use((req, res, next) => {
     const error = new Error('Not Found');
